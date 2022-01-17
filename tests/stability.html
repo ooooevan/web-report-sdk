@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <meta http-equiv="refresh" content="5" /> -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>stability</title>
+    <script src="../node_modules/js-base64/base64.js"></script>
+    <script>
+      Object.defineProperty(HTMLImageElement.prototype, 'src', {
+        set(v) {
+          const url = new URL(v);
+          const href = url.host + url.pathname;
+          const data = JSON.parse(Base64.decode(decodeURI(url.search.replace(/^\?data=/, ''))));
+          console.log('上报拦截 - 接口地址：', href, '，数据：', data);
+        },
+      });
+    </script>
+    <script src="../dist/dist.js"></script>
+    <script>
+      webReport.init({ server: 'http://localhost:8888', single: true });
+    </script>
+  </head>
+
+  <body>
+    <h1>测试性能</h1>
+    <button onclick="fetch1()">fetch /</button>
+    <button onclick="fetchBaidu()">fetchbaidu</button>
+    <button onclick="fetchxxx()">fetchxxx</button>
+    <br />
+    <button onclick="xhr1()">xhr /</button>
+    <button onclick="xhrBaidu()">xhrbaidu</button>
+    <button onclick="xhrxxx()">xhrxxx</button>
+    <script>
+      const p = document.createElement('p');
+      p.innerText =
+        '这是插入的段落；这是插入的段落；这是插入的段落；这是插入的段落；这是插入的段落；这是插入的段落；这是插入的段落；这是插入的段落；这是插入的段落；这是插入的段落；这是插入的段落；这是插入的段落；这是插入的段落；这是插入的段落；';
+      document.body.appendChild(p);
+    </script>
+    <script>
+      function ajax(params) {
+        params = params || {};
+        params.data = params.data || {};
+        var json = params.jsonp ? jsonp(params) : json(params);
+        function json(params) {
+          params.type = (params.type || 'GET').toUpperCase();
+          params.data = formatParams(params.data);
+          var xhr = null;
+
+          if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+          } else {
+            xhr = new ActiveXObjcet('Microsoft.XMLHTTP');
+          }
+
+          xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+              var status = xhr.status;
+              if (status >= 200 && status < 300) {
+                var response = '';
+                var type = xhr.getResponseHeader('Content-type');
+                if (type.indexOf('xml') !== -1 && xhr.responseXML) {
+                  response = xhr.responseXML;
+                } else if (type === 'application/json') {
+                  response = JSON.parse(xhr.responseText);
+                } else {
+                  response = xhr.responseText;
+                }
+                params.success && params.success(response);
+              } else {
+                params.error && params.error(status);
+              }
+            }
+          };
+
+          if (params.type == 'GET') {
+            xhr.open(params.type, params.url + '?' + params.data, true);
+            xhr.send(null);
+          } else {
+            xhr.open(params.type, params.url, true);
+            xhr.setRequestHeader(
+              'Content-Type',
+              'application/x-www-form-urlencoded; charset=UTF-8'
+            );
+            xhr.send(params.data);
+          }
+        }
+      }
+
+      function formatParams(data) {
+        var arr = [];
+        for (var name in data) {
+          arr.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
+        }
+        arr.push('v=' + random());
+        return arr.join('&');
+      }
+
+      function random() {
+        return Math.floor(Math.random() * 10000 + 500);
+      }
+    </script>
+    <script>
+      function fetch1() {
+        fetch('/');
+      }
+      function fetchBaidu() {
+        fetch('https://www.baidu.com');
+      }
+      function fetchxxx() {
+        fetch('https://www.x.x.x.x.x.com');
+      }
+      function xhr1() {
+        ajax({ url: '/' });
+      }
+      function xhrBaidu() {
+        ajax({
+          url: 'https://www.baidu.com/x',
+          type: 'get',
+        });
+      }
+      function xhrxxx() {
+        ajax({
+          url: 'https://www.x.x.x.x.x.com/x',
+          type: 'get',
+        });
+      }
+    </script>
+  </body>
+</html>

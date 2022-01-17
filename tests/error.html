@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>error</title>
+    <script src="../node_modules/js-base64/base64.js"></script>
+
+    <script>
+      Object.defineProperty(HTMLImageElement.prototype, 'src', {
+        set(v) {
+          const url = new URL(v);
+          const href = url.host + url.pathname;
+          const data = JSON.parse(Base64.decode(decodeURI(url.search.replace(/^\?data=/, ''))));
+          console.log('上报拦截 - 接口地址：', href, '，数据：', data);
+        },
+      });
+    </script>
+    <script src="../dist/dist.js"></script>
+  </head>
+
+  <body>
+    <button onclick="jsError()">js异常</button>
+    <button onclick="promiseReject()">promise reject异常</button>
+    <button onclick="promiseError()">promise异常</button>
+    <button onclick="resourceError()">资源异常</button>
+    <script>
+      function jsError() {
+        throw new Error('运行时异常');
+      }
+      function promiseReject() {
+        new Promise((res, rej) => {
+          rej('promise reject异常');
+        });
+      }
+      function promiseError() {
+        new Promise((res, rej) => {
+          throw new Error('promise异常');
+        });
+      }
+      function resourceError() {
+        const script = document.createElement('script');
+        script.src = 'error src';
+        document.body.appendChild(script);
+        setTimeout(() => {
+          document.body.removeChild(script);
+        }, 1000);
+      }
+    </script>
+    <script>
+      webReport.init({ server: 'https://server.com' });
+    </script>
+  </body>
+</html>
