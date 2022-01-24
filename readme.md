@@ -25,3 +25,7 @@ yarn build
 ├── rollup.config.js  # rollup配置
 ├── tsconfig.json     # ts配置
 ```
+
+```bash
+npm publish --access=public
+```
