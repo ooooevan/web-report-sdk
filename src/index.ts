@@ -71,6 +71,12 @@ class Webreport {
   track(name: string, data: any) {
     this.send(new TrackData({ name, data }));
   }
+  /** 登录 */
+  login(distinctId: string) {
+    setCookies({
+      [COOKIE_KEY.distinctId]: distinctId,
+    });
+  }
 }
 
 export default new Webreport();

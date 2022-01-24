@@ -73,6 +73,8 @@ export const start = () => {
       });
     };
   }
+  // window.addEventListener('beforeunload',e=>{
+  // })
 };
 
 /** 当前页面信息 */

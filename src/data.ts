@@ -22,19 +22,21 @@ export interface Data {
   performanceStamp?: number;
   /** date.now */
   timeStamp?: number;
+  /**页面地址 */
+  url?: string;
+  /**页面title */
+  title?: string;
+
   /**元素路径 */
   path?: string;
   /**最后一个交互元素路径 */
   lastPath?: string;
   /**最后一个交互元素属性 */
   lastElement?: string;
-  /**页面地址 */
-  url?: string;
-  /**页面title */
-  title?: string;
 }
+
 /**错误数据 */
-export interface ErrorData {
+export interface ErrorData extends Data {
   /**错误信息栈 */
   stack?: string;
   /**错误message */
@@ -46,8 +48,12 @@ export interface ErrorData {
   /** 列*/
   colno?: number;
 }
+
 /**性能数据 */
-export interface NavigationTimingData {
+export interface StabilityData extends Data {}
+
+/** 页面导航性能数据 */
+export interface NavigationTimingData extends StabilityData {
   /** unload 卸载时间 */
   unload: number;
   /** redirect */
@@ -87,8 +93,9 @@ export interface NavigationTimingData {
   /** 累积偏移分数 */
   cls: number;
 }
+
 /** 静态资源 性能数据 */
-export interface ResourceStabilityData {
+export interface ResourceStabilityData extends StabilityData {
   /**缓存情况 */
   cacheType: string;
   /**请求地址 */
@@ -110,7 +117,7 @@ export interface ResourceStabilityData {
 }
 
 /**异步资源数据（fetch、xhr），包含请求完成(有status)、请求失败(请求error) */
-export interface RequestResourceStabilityData {
+export interface RequestResourceStabilityData extends ResourceStabilityData {
   /**响应状态码，0表示失败 */
   status?: number;
   /**如果报错，message */
@@ -121,8 +128,11 @@ export interface RequestResourceStabilityData {
   bodyUsed?: boolean;
 }
 
+/**用户交互数据 */
+export interface StatisticsData extends Data {}
+
 /** 埋点数据，用户点击，访问 */
-export interface ClickStatisticsData {
+export interface ClickStatisticsData extends StatisticsData {
   /**坐标x */
   pageX: number;
   /**坐标y */
@@ -138,7 +148,7 @@ export interface ClickStatisticsData {
 }
 
 /**页面访问性数据 */
-export interface PageViewStatisticsData {
+export interface PageViewStatisticsData extends StatisticsData {
   /**显示器Height */
   screenHeight: number;
   /**显示器Width */
@@ -162,12 +172,12 @@ export interface PageViewStatisticsData {
 }
 
 /**自定义track */
-export interface TrackData {
+export interface TrackData extends Data {
   name: string;
   data: any;
 }
 
-export abstract class Data {
+export class Data {
   constructor(_data: Partial<Data> = {}) {
     const cookies = webReport.cookies || {};
     const data = {
@@ -191,20 +201,24 @@ export class ErrorData extends Data {
     super(data);
   }
 }
-/** NavigationTiming*/
-export class NavigationTimingData extends Data {
+export class StabilityData extends Data {}
+
+/** 页面导航性能*/
+export class NavigationTimingData extends StabilityData {
   constructor(_data: NavigationTimingData) {
     const data = { ..._data, type: DataType.stability, subType: StabilityType.navigationTiming };
     super(data);
   }
 }
+
 /**静态资源 */
-export class ResourceStabilityData extends Data {
+export class ResourceStabilityData extends StabilityData {
   constructor(_data: ResourceStabilityData) {
     const data = { ..._data, type: DataType.stability, subType: StabilityType.resource };
     super(data);
   }
 }
+
 /**异步静态资源 */
 export class RequestResourceStabilityData extends ResourceStabilityData {
   constructor(_data: RequestResourceStabilityData) {
@@ -213,13 +227,14 @@ export class RequestResourceStabilityData extends ResourceStabilityData {
   }
 }
 
-export class ClickStatisticsData extends Data {
+export class StatisticsData extends Data {}
+export class ClickStatisticsData extends StatisticsData {
   constructor(_data: ClickStatisticsData) {
     const data = { ..._data, type: DataType.statistics, subType: StatisticsType.click };
     super(data);
   }
 }
-export class PageViewStatisticsData extends Data {
+export class PageViewStatisticsData extends StatisticsData {
   constructor(_data: PageViewStatisticsData) {
     const data = { ..._data, type: DataType.statistics, subType: StatisticsType.pageView };
     super(data);
