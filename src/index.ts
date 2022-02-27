@@ -79,4 +79,6 @@ class Webreport {
   }
 }
 
+export * from './config';
+export * from './data';
 export default new Webreport();

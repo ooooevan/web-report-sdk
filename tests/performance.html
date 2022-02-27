@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>error</title>
+    <script src="../node_modules/js-base64/base64.js"></script>
+
+    <script>
+      Object.defineProperty(HTMLImageElement.prototype, 'src', {
+        set(v) {
+          const url = new URL(v);
+          const href = url.host + url.pathname;
+          const data = JSON.parse(Base64.decode(decodeURI(url.search.replace(/^\?data=/, ''))));
+          console.log('上报拦截 - 接口地址：', href, '，数据：', data);
+        },
+      });
+    </script>
+    <script src="../dist/dist.js"></script>
+  </head>
+
+  <body>
+    <input type="text" />
+    <button>按钮</button>
+    <script>
+      /**
+       * 测试fid
+       * 100ms内
+       * 100-300
+       * 300+
+       **/
+
+      setTimeout(() => {
+        for (let i = 0; i < 1000000000; i++) {}
+      });
+    </script>
+    <script>
+      webReport.init({ server: 'https://server.com' });
+    </script>
+  </body>
+</html>
