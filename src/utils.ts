@@ -1,6 +1,11 @@
 import Cookies from 'js-cookie';
 import { COOKIE_KEY, COOKIE_KEY_ENUM, ResourceType } from './config';
 
+/** 兼容node使用 */
+if (!window) {
+  (window as any) = { addEventListener: () => {} };
+}
+
 /** 获取元素路径 */
 export const getElementPath = (ePath: HTMLElement[]) => {
   const paths: string[] = [];

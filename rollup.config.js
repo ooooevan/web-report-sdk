@@ -5,7 +5,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 export default {
   input: 'src/index.ts',
   output: {
-    file: 'dist/dist.js',
+    file: 'dist/index.js',
     name: 'webReport',
     format: 'umd'
   },
