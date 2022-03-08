@@ -1,9 +1,9 @@
 {
   "name": "@copyist/web-report-sdk",
-  "version": "0.0.2-beta5",
+  "version": "0.0.2-beta7",
   "main": "dist/index.js",
-  "module": "es/index.js",
-  "types": "es/index.d.ts",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
     "watch": "rollup -c -w",
     "build": "rollup -c && tsc",
@@ -34,7 +34,7 @@
   },
   "files": [
     "dist",
-    "es",
+    "lib",
     "src",
     "tests"
   ]
