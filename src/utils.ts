@@ -31,7 +31,7 @@ export const getElementProp = (element?: HTMLElement) => {
   if (!element) return '';
   const names = element.getAttributeNames();
   let result = element.tagName.toLowerCase();
-  if ('html' !== result) result += `[innerText=${element.innerText.substring(0, 20)}]`;
+  if ('html' !== result) result += `[innerText=${(element.innerText || '').substring(0, 20)}]`;
   names.forEach(name => {
     result += `[${name}=${element.getAttribute(`${name}`)}]`;
   });
