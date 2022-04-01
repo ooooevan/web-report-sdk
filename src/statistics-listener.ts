@@ -73,11 +73,19 @@ export const start = () => {
       });
     };
   }
+
   // window.addEventListener('beforeunload',e=>{
   // })
 };
+/** 初始化页面访问信息 */
+export const getInitPageViewData = () => {
+  const data = getPageViewData({
+    historyType: 'init',
+  });
+  webReport.send(data);
+};
 
-/** 当前页面信息 */
+/** 当前页面信息，计算PV */
 export const getPageViewData = (data?: Partial<PageViewStatisticsData>) => {
   return new PageViewStatisticsData({
     screenHeight: screen.height,

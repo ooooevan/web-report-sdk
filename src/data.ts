@@ -168,7 +168,7 @@ export interface PageViewStatisticsData extends StatisticsData {
   /** 路由跳转，来源url */
   from?: string;
   /**跳转方式 */
-  historyType?: 'pushState' | 'replaceState' | 'hashChange';
+  historyType?: 'pushState' | 'replaceState' | 'hashChange' | 'init';
 }
 
 /**自定义track */
@@ -197,7 +197,7 @@ export class Data {
 
 export class ErrorData extends Data {
   constructor(_data: ErrorData = {}) {
-    const data = { ..._data, type: DataType.error };
+    const data = { type: DataType.error, ..._data };
     super(data);
   }
 }
@@ -206,7 +206,7 @@ export class StabilityData extends Data {}
 /** 页面导航性能*/
 export class NavigationTimingData extends StabilityData {
   constructor(_data: NavigationTimingData) {
-    const data = { ..._data, type: DataType.stability, subType: StabilityType.navigationTiming };
+    const data = { type: DataType.stability, subType: StabilityType.navigationTiming, ..._data };
     super(data);
   }
 }
@@ -214,7 +214,7 @@ export class NavigationTimingData extends StabilityData {
 /**静态资源 */
 export class ResourceStabilityData extends StabilityData {
   constructor(_data: ResourceStabilityData) {
-    const data = { ..._data, type: DataType.stability, subType: StabilityType.resource };
+    const data = { type: DataType.stability, subType: StabilityType.resource, ..._data };
     super(data);
   }
 }
@@ -222,7 +222,7 @@ export class ResourceStabilityData extends StabilityData {
 /**异步静态资源 */
 export class RequestResourceStabilityData extends ResourceStabilityData {
   constructor(_data: RequestResourceStabilityData) {
-    const data = { ..._data, type: DataType.stability, subType: StabilityType.request };
+    const data = { type: DataType.stability, subType: StabilityType.request, ..._data };
     super(data);
   }
 }
@@ -230,13 +230,13 @@ export class RequestResourceStabilityData extends ResourceStabilityData {
 export class StatisticsData extends Data {}
 export class ClickStatisticsData extends StatisticsData {
   constructor(_data: ClickStatisticsData) {
-    const data = { ..._data, type: DataType.statistics, subType: StatisticsType.click };
+    const data = { type: DataType.statistics, subType: StatisticsType.click, ..._data };
     super(data);
   }
 }
 export class PageViewStatisticsData extends StatisticsData {
   constructor(_data: PageViewStatisticsData) {
-    const data = { ..._data, type: DataType.statistics, subType: StatisticsType.pageView };
+    const data = { type: DataType.statistics, subType: StatisticsType.pageView, ..._data };
     super(data);
   }
 }
@@ -244,7 +244,7 @@ export class PageViewStatisticsData extends StatisticsData {
 /**自定义上报数据 */
 export class TrackData extends Data {
   constructor(_data: TrackData) {
-    const data = { ..._data, type: DataType.track, subType: TrackType.track };
+    const data = { type: DataType.track, subType: TrackType.track, ..._data };
     super(data);
   }
 }

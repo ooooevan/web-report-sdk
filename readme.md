@@ -1,3 +1,19 @@
+## web-report-sdk
+
+### 使用
+
+```bash
+yarn add @copyist/web-report-sdk
+```
+
+```js
+import webreport from '@copyist/web-report-sdk';
+
+webreport.init({
+  server: 'http://localhost:3000',
+});
+```
+
 ### 调试
 
 ```bash

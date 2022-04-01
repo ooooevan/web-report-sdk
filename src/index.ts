@@ -8,7 +8,7 @@ import {
   getResourcesData,
   start as startListenStability,
 } from './stability-listener';
-import { start as startListenStatistics } from './statistics-listener';
+import { start as startListenStatistics, getInitPageViewData } from './statistics-listener';
 import { Data, TrackData } from './data';
 import { Options } from './interface';
 
@@ -21,6 +21,7 @@ class Webreport {
     startListenError();
     startListenStatistics();
     window.addEventListener('load', async () => {
+      getInitPageViewData();
       startListenStability();
       const navigationTiming = await getNavigationTiming();
       const resources = getResourcesData();
@@ -50,7 +51,7 @@ class Webreport {
   }
   _send(data: Data | Data[]) {
     const img = document.createElement('img');
-    img.src = this.options.server + 'xx?data=' + encode(JSON.stringify(data));
+    img.src = this.options.server + 'report?data=' + encode(JSON.stringify(data));
   }
   /**上报数据 */
   send(data: Data | Data[]) {
