@@ -144,3 +144,8 @@ export const formatXhrOrFetchResourceUrl = (_url: string) => {
   }
   return _url;
 };
+
+/** 编码base64中的+/=，防止url传参失败 */
+export const encodeBase64Char = (str: string) => {
+  return str.replace(/\+/g, '%2B').replace(/\//g, '%2F').replace(/\=/g, '%3D');
+};

@@ -1,5 +1,5 @@
 import { COOKIE_KEY, COOKIE_KEY_ENUM } from './config';
-import { getCookies, setCookies, splitArray } from './utils';
+import { encodeBase64Char, getCookies, setCookies, splitArray } from './utils';
 import { v4 as uuid } from 'uuid';
 import { start as startListenError } from './error-listener';
 import { encode } from 'js-base64';
@@ -51,7 +51,8 @@ class Webreport {
   }
   _send(data: Data | Data[]) {
     const img = document.createElement('img');
-    img.src = this.options.server + 'report?data=' + encode(JSON.stringify(data));
+    const str = encodeBase64Char(JSON.stringify(data));
+    img.src = this.options.server + 'report?data=' + encode(str);
   }
   /**上报数据 */
   send(data: Data | Data[]) {
