@@ -51,8 +51,8 @@ class Webreport {
   }
   _send(data: Data | Data[]) {
     const img = document.createElement('img');
-    const str = encodeBase64Char(JSON.stringify(data));
-    img.src = this.options.server + 'report?data=' + encode(str);
+    const str = JSON.stringify(data);
+    img.src = this.options.server + 'report?data=' + encodeBase64Char(encode(str));
   }
   /**上报数据 */
   send(data: Data | Data[]) {
